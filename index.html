@@ -11,12 +11,14 @@
 
 
 <style>
-html, body {
+html {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
+  margin: 0;
+  min-height: 100%;
   font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
     radial-gradient(
@@ -37,7 +39,14 @@ body {
   background-attachment: fixed;
   color: #f4f6fb;
   text-align: center;
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
@@ -88,12 +97,9 @@ a:hover {
 
 /* Sticky contact button */
 .contact-trigger {
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 0;
-  right: 0;
   padding: 16px 20px;
-  background: linear-gradient(180deg, transparent 0%, rgba(5, 6, 13, 0.95) 30%);
   z-index: 100;
 }
 
@@ -102,9 +108,9 @@ a:hover {
   max-width: 400px;
   padding: 14px 24px;
   border-radius: 14px;
-  border: 1px solid rgba(127, 191, 122, 0.4);
-  background: rgba(127, 191, 122, 0.15);
-  color: #f4f6fb;
+  border: 1px solid rgba(99, 179, 209, 0.6);
+  background: rgba(99, 179, 209, 0.9);
+  color: #0a1628;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -113,8 +119,8 @@ a:hover {
 }
 
 .contact-trigger button:hover {
-  background: rgba(127, 191, 122, 0.25);
-  border-color: rgba(127, 191, 122, 0.6);
+  background: rgba(120, 195, 220, 0.95);
+  border-color: rgba(120, 195, 220, 0.8);
   transform: translateY(-2px);
 }
 
@@ -220,6 +226,21 @@ a:hover {
   min-height: 120px;
 }
 
+.contact-hint {
+  color: #8b95a8;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+#formFields {
+  display: grid;
+  gap: 12px;
+}
+
+#formFields.hidden {
+  display: none;
+}
+
 .contact-form button[type="submit"] {
   padding: 14px;
   border-radius: 12px;
@@ -242,25 +263,47 @@ a:hover {
   color: #b7c0d1;
   font-size: 0.95rem;
 }
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b7c0d1;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.checkbox-label.hidden {
+  display: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #63b3d1;
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>Memorum</h1>
-    <div class="tagline">All of our stories - preserved and shared across time</div>
-    
-    <div class="section">
-      <h2>What is Memorum?</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+  <div class="page-wrapper">
+    <div class="container">
+      <h1>Memorum</h1>
+      <div class="tagline">All of our stories - preserved and shared across time</div>
+      
+      <div class="section">
+        <h2>What is Memorum?</h2>
+        <p>Memorum is a non-profit project to preserve and share the collective stories of humanity, for all of time. The project takes on the sacred mission of remembering anyone who wants to be remembered.</p>
+        <p>What does this mean, specifically? In its earliest manifestation, it means a digital archive of people's memories in the form of journals, questions, pictures, and videos, that are stored in a way that protects them from loss, deletion, being sold, or shut down. It means a website that you can store your or your loved ones' memories that you can rest assured will always be there, and you can always go back to, free from ads or monetization. It means a place to save your memories somewhere that you know will continue to be there after you're gone. It can be the photo album you pass on to your kids. It can be the half-finished book you always wanted to publish but never did. It can be the memory of the way your grandfather's smile made you feel. Whether you release your memories now, or only after you're gone, is up to you.</p>
+        <p>And while we're still here, Memorum can be our place to find each other, too. Who knows what beautiful stories exist that span the distance of space and time?</p>
+      </div>
     </div>
-  </div>
 
-  <!-- Sticky contact button -->
-  <div class="contact-trigger">
-    <button id="openContactBtn">Want to get in touch?</button>
+    <!-- Sticky contact button -->
+    <div class="contact-trigger">
+      <button id="openContactBtn">Have ideas, or want to be a part?</button>
+    </div>
   </div>
 
   <!-- Modal -->
@@ -271,10 +314,17 @@ a:hover {
         <button class="modal-close" id="closeModalBtn">&times;</button>
       </div>
       <form id="contactForm" method="POST" action="/contact" class="contact-form">
-        <input name="name" placeholder="Name" autocomplete="name" />
-        <input name="email" type="email" placeholder="Email (optional)" autocomplete="email" />
-        <textarea name="message" placeholder="Message" required rows="5"></textarea>
-        <button type="submit">I'm Interested</button>
+        <div id="formFields">
+          <textarea name="message" placeholder="Message" required rows="5"></textarea>
+          <p class="contact-hint">Want us to reach back out to you? If so, how can we reach you?</p>
+          <input name="name" placeholder="Name (optional)" autocomplete="name" />
+          <input name="email" id="emailInput" type="email" placeholder="Email (optional)" autocomplete="email" />
+          <label id="subscribeLabel" class="checkbox-label hidden">
+            <input type="checkbox" name="subscribe" value="yes" />
+            <span>Yes, keep me updated on news about this project</span>
+          </label>
+          <button type="submit">Send Message</button>
+        </div>
         <div id="status"></div>
       </form>
     </div>
@@ -282,10 +332,23 @@ a:hover {
     
   <script>
     const form = document.getElementById("contactForm");
+    const formFields = document.getElementById("formFields");
     const statusEl = document.getElementById("status");
     const modal = document.getElementById("contactModal");
     const openBtn = document.getElementById("openContactBtn");
     const closeBtn = document.getElementById("closeModalBtn");
+    const emailInput = document.getElementById("emailInput");
+    const subscribeLabel = document.getElementById("subscribeLabel");
+
+    // Show/hide subscribe checkbox based on email input
+    emailInput.addEventListener("input", () => {
+      if (emailInput.value.trim()) {
+        subscribeLabel.classList.remove("hidden");
+      } else {
+        subscribeLabel.classList.add("hidden");
+        subscribeLabel.querySelector("input").checked = false;
+      }
+    });
 
     // Open modal
     openBtn.addEventListener("click", () => {
@@ -293,10 +356,15 @@ a:hover {
       document.body.style.overflow = "hidden";
     });
 
-    // Close modal
+    // Close modal and reset form state
     function closeModal() {
       modal.classList.remove("active");
       document.body.style.overflow = "";
+      // Reset form and show fields again when modal closes
+      form.reset();
+      formFields.classList.remove("hidden");
+      subscribeLabel.classList.add("hidden");
+      statusEl.textContent = "";
     }
 
     closeBtn.addEventListener("click", closeModal);
@@ -333,7 +401,9 @@ a:hover {
           return;
         }
 
-        statusEl.textContent = "Thank you. We will let you know when we're ready to preserve your story.";
+        // Hide form fields and show success message
+        formFields.classList.add("hidden");
+        statusEl.textContent = "Thank you! Message sent.";
         form.reset();
       } catch (err) {
         statusEl.textContent = "Failed to send. Please try again.";
