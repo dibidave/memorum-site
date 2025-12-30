@@ -5,12 +5,14 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
       const name = String(formData.get("name") || "Anonymous");
       const email = String(formData.get("email") || "(no email)");
       const message = String(formData.get("message") || "");
+      const subscribe = formData.get("subscribe") === "yes";
   
       const body = `
   New message from memorum.org
   
   Name: ${name}
   Email: ${email}
+  Subscribe to updates: ${subscribe ? "Yes" : "No"}
   
   Message:
   ${message}
