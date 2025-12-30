@@ -73,7 +73,56 @@ a:hover {
   <div class="container">
     <h1>Memorum</h1>
     <div class="tagline">All of our stories - preserved and shared across time</div>
-    <a href="mailto:contact@memorum.org">Contact</a>
+    <form id="contactForm" method="POST" action="/contact" style="max-width: 520px; margin: 0 auto;">
+      <div style="display: grid; gap: 12px; text-align: left;">
+        <input name="name" placeholder="Name" autocomplete="name"
+          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;" />
+    
+        <input name="email" type="email" placeholder="Email (optional)" autocomplete="email"
+          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;" />
+    
+        <textarea name="message" placeholder="Message" required rows="5"
+          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;resize:vertical;"></textarea>
+    
+        <button type="submit"
+          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(127,191,122,.35);background:rgba(127,191,122,.12);color:#f4f6fb;font-weight:500;cursor:pointer;">
+          Send
+        </button>
+    
+        <div id="status" style="min-height: 1.2em; color:#b7c0d1; font-size: 0.95rem;"></div>
+      </div>
+    </form>
+    
+    <script>
+      const form = document.getElementById("contactForm");
+      const statusEl = document.getElementById("status");
+    
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        statusEl.textContent = "Sending…";
+    
+        try {
+          const res = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+          });
+    
+          if (!res.ok) {
+            const txt = await res.text();
+            statusEl.textContent = "Failed to send. Please try again.";
+            console.error(txt);
+            return;
+          }
+    
+          statusEl.textContent = "Sent. Thank you.";
+          form.reset();
+        } catch (err) {
+          statusEl.textContent = "Failed to send. Please try again.";
+          console.error(err);
+        }
+      });
+    </script>
+    
   </div>
 </body>
 </html>
