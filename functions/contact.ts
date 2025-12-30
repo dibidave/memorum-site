@@ -1,11 +1,12 @@
 export const onRequestPost: PagesFunction = async ({ request, env }) => {
-    const formData = await request.formData();
+    try {
+      const formData = await request.formData();
   
-    const name = formData.get("name") || "Anonymous";
-    const email = formData.get("email") || "(no email)";
-    const message = formData.get("message") || "";
+      const name = String(formData.get("name") || "Anonymous");
+      const email = String(formData.get("email") || "(no email)");
+      const message = String(formData.get("message") || "");
   
-    const body = `
+      const body = `
   New message from memorum.org
   
   Name: ${name}
@@ -15,33 +16,31 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
   ${message}
   `;
   
-    const response = await fetch("https://api.mailchannels.net/tx/v1/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [{ email: "contact@memorum.org" }],
-          },
-        ],
-        from: {
-          email: "no-reply@memorum.org",
-          name: "Memorum",
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
         },
-        subject: "New message from memorum.org",
-        content: [
-          {
-            type: "text/plain",
-            value: body,
-          },
-        ],
-      }),
-    });
+        body: JSON.stringify({
+          from: "Memorum <contact@memorum.org>",
+          to: ["contact@memorum.org"],
+          subject: "New message from memorum.org",
+          text: body,
+        }),
+      });
   
-    if (!response.ok) {
-      return new Response("Failed to send message", { status: 500 });
+      if (!res.ok) {
+        const errText = await res.text();
+        return new Response(
+          `Failed to send email: ${errText}`,
+          { status: 500 }
+        );
+      }
+  
+      return new Response("OK", { status: 200 });
+    } catch (err) {
+      return new Response("Server error", { status: 500 });
     }
-  
-    return new Response("OK", { status: 200 });
   };
   
