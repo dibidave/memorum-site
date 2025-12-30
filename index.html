@@ -13,14 +13,11 @@
 <style>
 html, body {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
   font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background:
     radial-gradient(
       at 25% 30%,
@@ -37,12 +34,16 @@ body {
       #0b1d3a 0%,
       #05060d 70%
     );
+  background-attachment: fixed;
   color: #f4f6fb;
   text-align: center;
+  padding-bottom: 80px;
 }
 
 .container {
   padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -54,7 +55,25 @@ h1 {
 .tagline {
   font-size: clamp(1rem, 3.5vw, 1.2rem);
   color: #b7c0d1;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+}
+
+.section {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.section h2 {
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  color: #f4f6fb;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.section p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #b7c0d1;
 }
 
 a {
@@ -66,6 +85,163 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Sticky contact button */
+.contact-trigger {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background: linear-gradient(180deg, transparent 0%, rgba(5, 6, 13, 0.95) 30%);
+  z-index: 100;
+}
+
+.contact-trigger button {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(127, 191, 122, 0.4);
+  background: rgba(127, 191, 122, 0.15);
+  color: #f4f6fb;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.contact-trigger button:hover {
+  background: rgba(127, 191, 122, 0.25);
+  border-color: rgba(127, 191, 122, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 13, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, rgba(11, 29, 58, 0.95), rgba(5, 6, 13, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #b7c0d1;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: #f4f6fb;
+}
+
+/* Form styles */
+.contact-form {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f6fb;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: rgba(127, 191, 122, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #6b7280;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form button[type="submit"] {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(127, 191, 122, 0.35);
+  background: rgba(127, 191, 122, 0.12);
+  color: #f4f6fb;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-form button[type="submit"]:hover {
+  background: rgba(127, 191, 122, 0.2);
+  border-color: rgba(127, 191, 122, 0.5);
+}
+
+#status {
+  min-height: 1.2em;
+  color: #b7c0d1;
+  font-size: 0.95rem;
+}
 </style>
 </head>
 
@@ -73,56 +249,98 @@ a:hover {
   <div class="container">
     <h1>Memorum</h1>
     <div class="tagline">All of our stories - preserved and shared across time</div>
-    <form id="contactForm" method="POST" action="/contact" style="max-width: 520px; margin: 0 auto;">
-      <div style="display: grid; gap: 12px; text-align: left;">
-        <input name="name" placeholder="Name" autocomplete="name"
-          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;" />
     
-        <input name="email" type="email" placeholder="Email (optional)" autocomplete="email"
-          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;" />
-    
-        <textarea name="message" placeholder="Message" required rows="5"
-          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#f4f6fb;outline:none;resize:vertical;"></textarea>
-    
-        <button type="submit"
-          style="padding:12px 14px;border-radius:12px;border:1px solid rgba(127,191,122,.35);background:rgba(127,191,122,.12);color:#f4f6fb;font-weight:500;cursor:pointer;">
-          Send
-        </button>
-    
-        <div id="status" style="min-height: 1.2em; color:#b7c0d1; font-size: 0.95rem;"></div>
-      </div>
-    </form>
-    
-    <script>
-      const form = document.getElementById("contactForm");
-      const statusEl = document.getElementById("status");
-    
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        statusEl.textContent = "Sending…";
-    
-        try {
-          const res = await fetch(form.action, {
-            method: "POST",
-            body: new FormData(form),
-          });
-    
-          if (!res.ok) {
-            const txt = await res.text();
-            statusEl.textContent = "Failed to send. Please try again.";
-            console.error(txt);
-            return;
-          }
-    
-          statusEl.textContent = "Sent. Thank you.";
-          form.reset();
-        } catch (err) {
-          statusEl.textContent = "Failed to send. Please try again.";
-          console.error(err);
-        }
-      });
-    </script>
-    
+    <div class="section">
+      <h2>What is Memorum?</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
   </div>
+
+  <!-- Sticky contact button -->
+  <div class="contact-trigger">
+    <button id="openContactBtn">Want to get in touch?</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Get in Touch</h2>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <form id="contactForm" method="POST" action="/contact" class="contact-form">
+        <input name="name" placeholder="Name" autocomplete="name" />
+        <input name="email" type="email" placeholder="Email (optional)" autocomplete="email" />
+        <textarea name="message" placeholder="Message" required rows="5"></textarea>
+        <button type="submit">I'm Interested</button>
+        <div id="status"></div>
+      </form>
+    </div>
+  </div>
+    
+  <script>
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("status");
+    const modal = document.getElementById("contactModal");
+    const openBtn = document.getElementById("openContactBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    // Open modal
+    openBtn.addEventListener("click", () => {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
+
+    // Close modal
+    function closeModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+
+    // Close on overlay click
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        closeModal();
+      }
+    });
+
+    // Form submission
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "Sending…";
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          statusEl.textContent = "Failed to send. Please try again.";
+          console.error(txt);
+          return;
+        }
+
+        statusEl.textContent = "Thank you. We will let you know when we're ready to preserve your story.";
+        form.reset();
+      } catch (err) {
+        statusEl.textContent = "Failed to send. Please try again.";
+        console.error(err);
+      }
+    });
+  </script>
+    
 </body>
 </html>
